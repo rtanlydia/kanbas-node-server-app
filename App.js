@@ -11,6 +11,10 @@ import UserRoutes from "./Users/routes.js";
 
 
 const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas"
+
+console.log('Starting server...');
+console.log(`Connecting to MongoDB with connection string: ${CONNECTION_STRING}`);
+
 mongoose.connect(CONNECTION_STRING).then(() => {
     console.log(`MongoDB connected successfully to ${CONNECTION_STRING}`);
 }).catch((err) => {
