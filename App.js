@@ -12,7 +12,14 @@ import UserRoutes from "./Users/routes.js";
 
 
 const CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING || "mongodb://127.0.0.1:27017/kanbas"
-mongoose.connect(CONNECTION_STRING);
+mongoose.connect(CONNECTION_STRING, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+}).then(() => {
+    console.log(`MongoDB connected successfully to ${CONNECTION_STRING}`);
+}).catch((err) => {
+    console.error('MongoDB connection error:', err);
+});
 
 const app = express()
 app.use(cors());
