@@ -27,3 +27,4 @@ export const updateUserEmail = (userId, email) => {
 export const updateUserRole = (userId, role) => {
     return model.updateOne({ _id: userId }, { $set: { role: role } });
 };
+
