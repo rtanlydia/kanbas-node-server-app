@@ -1,14 +1,32 @@
 import CourseModel from "./model.js";
 
-export const createCourse = (course) => {
-    delete course._id
-    return model.create(course);
-}
+export const createCourse = async (course) => {
+    try {
+        delete course._id;
+        course.number = `Course-${Date.now()}`;
+        return await CourseModel.create(course);
+    } catch (error) {
+        console.error('Error creating course:', error);
+        throw error;
+    }
+};
 
-// export const createCourse = (course) => model.create(course);
-export const findAllCourses = () => CourseModel.find();
-export const findCourseById = (courseId) => CourseModel.findById(courseId);
-export const updateCourse = (courseId, updatedCourse) => CourseModel.updateOne({ _id: courseId }, { $set: updatedCourse });
-export const deleteCourse = (courseId) => CourseModel.deleteOne({ _id: courseId });
-export const findCoursesByInstructor = (instructorId) => CourseModel.find({ instructor: instructorId });
-export const findCoursesByDepartment = (department) => CourseModel.find({ department });
+export const findAllCourses = () => {
+    return CourseModel.find();
+};
+
+export const findCourseById = (number) => {
+    return CourseModel.findOne({ number }).exec();
+};
+
+export const updateCourse = (id, updatedCourse) => {
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        throw new Error('Invalid ID format');
+    }
+    //return CourseModel.updateOne({ _id: id }, { $set: updatedCourse });
+    return CourseModel.updateOne({ _id: mongoose.Types.ObjectId(id) }, { $set: updatedCourse });
+};
+
+export const deleteCourse = (id) => {
+    return CourseModel.deleteOne({ _id: id });
+};

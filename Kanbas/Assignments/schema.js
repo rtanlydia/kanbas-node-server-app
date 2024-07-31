@@ -23,8 +23,8 @@ import mongoose from "mongoose";
 
 const assignmentSchema = new mongoose.Schema({
     _id: mongoose.Schema.Types.ObjectId,
-    title: { type: String, required: true },
-    course: { type: String, required: true }
+    title: { type: String},
+    course: { type: String}
 }, { collection: "assignments" });
 
 export default assignmentSchema;
