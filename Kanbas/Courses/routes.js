@@ -1,12 +1,12 @@
 import * as dao from "./dao.js";
-import mongoose from 'mongoose';  // 确保导入 mongoose 以进行 ObjectId 验证
+import mongoose from 'mongoose';
 
 export default function CourseRoutes(app) {
 
     const createCourse = async (req, res) => {
         try {
             const course = await dao.createCourse(req.body);
-            res.status(201).json(course); // 返回201表示创建成功
+            res.status(201).json(course);
         } catch (error) {
             console.error('Error creating course:', error);
             res.status(500).send(error.message);
@@ -30,7 +30,7 @@ export default function CourseRoutes(app) {
             if (course) {
                 res.json(course);
             } else {
-                res.sendStatus(404); // 返回404表示未找到
+                res.sendStatus(404);
             }
         } catch (error) {
             console.error('Error finding course by ID:', error);
@@ -53,9 +53,9 @@ export default function CourseRoutes(app) {
         try {
             const status = await dao.deleteCourse(id);
             if (status.deletedCount > 0) {
-                res.sendStatus(204); // 返回204表示删除成功
+                res.sendStatus(204);
             } else {
-                res.sendStatus(404); // 返回404表示未找到
+                res.sendStatus(404);
             }
         } catch (error) {
             console.error('Error deleting course:', error);

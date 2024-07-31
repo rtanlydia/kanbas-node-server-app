@@ -26,54 +26,23 @@ export default function ModuleRoutes(app) {
     };
 
     const updateModule = async (req, res) => {
-        const { id } = req.params; // 从请求参数中提取模块 ID
-        const updatedModule = req.body; // 获取更新的数据
-
-        try {
-            // 检查 ID 格式是否有效
-            if (!mongoose.Types.ObjectId.isValid(id)) {
-                return res.status(400).send('Invalid ID format');
-            }
-
-            const module = await updateModuleInDb(id, updatedModule);
-            if (module) {
-                res.json(module); // 返回更新后的模块数据
-            } else {
-                res.sendStatus(404); // 如果模块不存在，返回404
-            }
-        } catch (error) {
-            console.error('Error updating module:', error);
-            res.status(500).send(error.message);
-        }
+        const { name } = req.params;
+        const updatedModule = req.body;
+        const status = await dao.updateModule(name, updatedModule);
+        res.json(status);
     };
+
 
     const deleteModule = async (req, res) => {
         const { mid } = req.params;
-
-        // 验证模块 ID 格式是否有效
-        if (!mongoose.Types.ObjectId.isValid(mid)) {
-            return res.status(400).send('Invalid module ID format');
-        }
-
-        try {
-            // 删除模块
-            const status = await deleteModuleFromDb(mid);
-            if (status.deletedCount > 0) {
-                res.sendStatus(200); // 删除成功
-            } else {
-                res.sendStatus(404); // 未找到模块
-            }
-        } catch (error) {
-            console.error('Error deleting module:', error);
-            res.status(500).send(error.message); // 内部服务器错误
-        }
+        const status = await dao.deleteModule(mid);
+        res.json(status);
     };
-
 
 
     app.post("/api/courses/:cid/modules", createModule);
     app.get("/api/courses/:number/modules", findModulesByCourse);
-    app.put("/api/modules/:mid", updateModule);
+    app.put("/api/modules/:name", updateModule);
     app.delete("/api/modules/:mid", deleteModule);
 }
 

@@ -20,11 +20,7 @@ export const findCourseById = (number) => {
 };
 
 export const updateCourse = (id, updatedCourse) => {
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new Error('Invalid ID format');
-    }
-    //return CourseModel.updateOne({ _id: id }, { $set: updatedCourse });
-    return CourseModel.updateOne({ _id: mongoose.Types.ObjectId(id) }, { $set: updatedCourse });
+    return CourseModel.updateOne({ _id: id }, { $set: updatedCourse });
 };
 
 export const deleteCourse = (id) => {

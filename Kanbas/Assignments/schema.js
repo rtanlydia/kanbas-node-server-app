@@ -22,9 +22,13 @@
 import mongoose from "mongoose";
 
 const assignmentSchema = new mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
-    title: { type: String},
-    course: { type: String}
+    title: { type: String, default: "Untitled Assignment" },
+    course: { type: String},
+    description: { type: String, default: "" },
+    availableFrom: { type: Date, default: null },
+    availableUntil: { type: Date, default: null },
+    dueDate: { type: Date, default: null },
+    points: { type: Number, default: 100 }
 }, { collection: "assignments" });
 
 export default assignmentSchema;
