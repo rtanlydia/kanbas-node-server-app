@@ -1,5 +1,4 @@
 import CourseModel from "./model.js";
-import model from "../../Users/model.js";
 
 export const createCourse = (course) => {
     delete course._id
