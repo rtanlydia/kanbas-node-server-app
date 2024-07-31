@@ -41,10 +41,10 @@
 //     });
 // }
 
-import express from "express";
+//import express from "express";
 import * as dao from "./dao.js";
 export default function AssignmentRoutes(app) {
-const router = express.Router();
+//const router = express.Router();
 
 const createAssignment = async (req, res) => {
     const newAssignment = req.body;
@@ -77,13 +77,13 @@ const deleteAssignment = async (req, res) => {
 };
 
 // Define routes
-router.post("/api/assignments", createAssignment);
-router.get("/api/assignments", findAllAssignments);
-router.get("/api/assignments/:assignmentId", findAssignmentById);
-router.put("/api/assignments/:assignmentId", updateAssignment);
-router.delete("/api/assignments/:assignmentId", deleteAssignment);
+    app.post("/api/assignments", createAssignment);
+    app.get("/api/assignments", findAllAssignments);
+    app.get("/api/assignments/:assignmentId", findAssignmentById);
+    app.put("/api/assignments/:assignmentId", updateAssignment);
+    app.delete("/api/assignments/:assignmentId", deleteAssignment);
 
-app.use(router);
+//app.use(router);
 
 
 };

@@ -27,12 +27,12 @@
 
 
 
-import express from "express";
+//import express from "express";
 import * as dao from "./dao.js";
 
 export default function UserRoutes(app) {
 
-    const router = express.Router();
+    //onst router = express.Router();
 
     const createCourse = async (req, res) => {
         const course = await dao.createCourse(req.body);
@@ -76,14 +76,14 @@ export default function UserRoutes(app) {
     };
 
     // Define routes
-    router.post("/api/courses", createCourse);
-    router.get("/api/courses", findAllCourses);
-    router.get("/api/courses/:courseId", findCourseById);
-    router.put("/api/courses/:courseId", updateCourse);
-    router.delete("/api/courses/:courseId", deleteCourse);
-    router.get("/api/courses/instructor/:instructorId", findCoursesByInstructor);
-    router.get("/api/courses/department/:department", findCoursesByDepartment);
+    app.post("/api/courses", createCourse);
+    app.get("/api/courses", findAllCourses);
+    app.get("/api/courses/:courseId", findCourseById);
+    app.put("/api/courses/:courseId", updateCourse);
+    app.delete("/api/courses/:courseId", deleteCourse);
+    app.get("/api/courses/instructor/:instructorId", findCoursesByInstructor);
+    app.get("/api/courses/department/:department", findCoursesByDepartment);
 
-    app.use(router);
+    //app.use(router);
 
 }
