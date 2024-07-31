@@ -23,6 +23,11 @@ export const updateCourse = (id, updatedCourse) => {
     return CourseModel.updateOne({ _id: id }, { $set: updatedCourse });
 };
 
+// export const updateCourseByName = async (number, updatedCourse) => {
+//     return CourseModel.updateOne({ number: number }, { $set: updatedCourse });
+// };
+
+
 export const deleteCourse = (id) => {
     return CourseModel.deleteOne({ _id: id });
 };
