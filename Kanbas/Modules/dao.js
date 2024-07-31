@@ -21,7 +21,8 @@ export const findModulesByCourse = async (number) => {
     }
 };
 
-export const updateModule = (name, updatedModule) => ModuleModel.findOneAndUpdate({ name }, updatedModule, { new: true });
+//export const updateModule = (name, updatedModule) => ModuleModel.findOneAndUpdate({ name }, updatedModule, { new: true });
+export const updateModule = (id, updatedModule) => ModuleModel.updateOne({ _id: id }, { $set: updatedModule });
 
 export const deleteModule = (id) => ModuleModel.deleteOne({ _id: id });
 

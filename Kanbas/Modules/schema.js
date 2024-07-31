@@ -7,7 +7,8 @@ const lessonSchema = new mongoose.Schema({
 });
 
 const moduleSchema = new mongoose.Schema({
-    name: { type: String, required: true, unique: true },
+    _id: { type: String, default: () => Date.now().toString() },
+    name: { type: String, required: true},
     description: { type: String},
     course: { type: String},
     lessons: [lessonSchema]
