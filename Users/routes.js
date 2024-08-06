@@ -81,6 +81,21 @@ export default function UserRoutes(app) {
         res.sendStatus(200);
     };
 
+    const findEnrolledCoursesByUserId = async (req, res) => {
+        try {
+            const user = await dao.findEnrolledCoursesByUserId(req.params.userId);
+            if (user) {
+                res.status(200).json(user.enrolledCourses);
+            } else {
+                res.status(404).json({ error: 'User not found' });
+            }
+        } catch (error) {
+            res.status(400).json({ error: error.message });
+        }
+    };
+
+
+
 
     app.post("/api/users", createUser);
     app.get("/api/users", findAllUsers);
@@ -92,7 +107,10 @@ export default function UserRoutes(app) {
     app.post("/api/users/signin", signin);
     app.post("/api/users/signout", signout);
     app.post("/api/users/profile", profile);
-    app.put("/api/users/:userId/email", updateUserEmail);}
+    app.put("/api/users/:userId/email", updateUserEmail);
+    // new user course!!!
+    app.get("/api/users/:userId/enrolledCourses", findEnrolledCoursesByUserId);
+}
 
 
 

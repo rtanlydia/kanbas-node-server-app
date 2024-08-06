@@ -28,3 +28,7 @@ export const updateUserRole = (userId, role) => {
     return model.updateOne({ _id: userId }, { $set: { role: role } });
 };
 
+// new!!!!!!
+export const findEnrolledCoursesByUserId = (userId) => {
+    return model.findById(userId).populate('enrolledCourses');
+};
