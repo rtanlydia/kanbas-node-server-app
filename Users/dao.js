@@ -1,4 +1,5 @@
 import model from "./model.js";
+import CourseModel from '../Kanbas/Courses/model.js';
 export const createUser = (user) => {
     delete user._id
     return model.create(user);
@@ -31,4 +32,28 @@ export const updateUserRole = (userId, role) => {
 // new!!!!!!
 export const findEnrolledCoursesByUserId = (userId) => {
     return model.findById(userId).populate('enrolledCourses');
+};
+
+// Enroll user in a course
+export const enrollUserInCourse = async (userId, courseId) => {
+    console.log(`Enrolling user with ID: ${userId} into course with ID: ${courseId}`); // 添加日志记录
+    const user = await model.findById(userId);
+    if (!user) {
+        console.error(`User not found with ID: ${userId}`); // 错误日志
+        throw new Error("User not found");
+    }
+
+    const course = await CourseModel.findById(courseId);
+    if (!course) {
+        console.error(`Course not found with ID: ${courseId}`); // 错误日志
+        throw new Error("Course not found");
+    }
+    if (user.enrolledCourses.includes(courseId)) {
+        console.error(`User already enrolled in course with ID: ${courseId}`); // 错误日志
+        throw new Error("User already enrolled in this course");
+    }
+
+    user.enrolledCourses.push(courseId);
+    await user.save();
+    return user.populate('enrolledCourses');
 };

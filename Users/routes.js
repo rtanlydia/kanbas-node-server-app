@@ -94,6 +94,23 @@ export default function UserRoutes(app) {
         }
     };
 
+    const enrollUserInCourse = async (req, res) => {
+        const { userId, courseId } = req.params;
+        try {
+            const user = await dao.enrollUserInCourse(userId, courseId);
+            res.status(200).json(user);
+        } catch (error) {
+            if (error.message === "User not found" || error.message === "Course not found") {
+                res.status(404).json({ error: error.message });
+            } else if (error.message === "User already enrolled in this course") {
+                res.status(400).json({ error: error.message });
+            } else {
+                res.status(500).json({ error: "An unexpected error occurred" });
+            }
+        }
+    };
+
+
 
 
 
@@ -110,6 +127,7 @@ export default function UserRoutes(app) {
     app.put("/api/users/:userId/email", updateUserEmail);
     // new user course!!!
     app.get("/api/users/:userId/enrolledCourses", findEnrolledCoursesByUserId);
+    app.post("/api/users/:userId/RegisterCourses/:courseId/enroll", enrollUserInCourse);
 }
 
 
