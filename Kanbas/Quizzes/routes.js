@@ -199,6 +199,22 @@ const QuizRoutes = (app) => {
             res.status(500).json({ error: 'Internal server error' });
         }
     });
+
+    app.put('/api/quizzes/:quizId/questions', async (req, res) => {
+        const { quizId } = req.params;
+        const newQuestion = req.body;
+
+        try {
+            const updatedQuiz = await dao.addQuestionToQuiz(quizId, newQuestion);
+            res.json(updatedQuiz);
+        } catch (error) {
+            res.status(500).send('Error adding question to quiz');
+        }
+    });
+
+
+
 };
+
 
 export default QuizRoutes;

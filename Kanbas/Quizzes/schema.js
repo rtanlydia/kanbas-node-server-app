@@ -1,50 +1,22 @@
-// import mongoose from "mongoose";
-//
-// const quizSchema = new mongoose.Schema({
-//     title: { type: String, default: "Untitled Quiz" },
-//     course: { type: String},
-//     description: { type: String, default: "" },
-//     availableFrom: { type: Date, default: null },
-//     availableUntil: { type: Date, default: null },
-//     dueDate: { type: Date, default: null },
-//     points: { type: Number, default: 100 },
-//     numberOfQuestion : {type: Number, default: 40}
-// }, { collection: "quizzes" });
-//
-// export default quizSchema;
-
-// import mongoose from "mongoose";
-//
-// const quizSchema = new mongoose.Schema({
-//     title: { type: String, default: "Untitled Quiz" },
-//     course: { type: String },
-//     description: { type: String, default: "" },
-//     availableFrom: { type: Date, default: null },
-//     availableUntil: { type: Date, default: null },
-//     dueDate: { type: Date, default: null },
-//     points: { type: Number, default: 100 },
-//     numberOfQuestions: { type: Number, default: 40 },
-//     status: {
-//         type: String,
-//         enum: ["Closed", "Available", "Not available until <AVAILABLE DATE>"],
-//         default: function() {
-//             const currentDate = new Date();
-//             if (this.availableFrom && currentDate < this.availableFrom) {
-//                 return `Not available until ${this.availableFrom.toLocaleDateString()}`;
-//             } else if (this.availableUntil && currentDate > this.availableUntil) {
-//                 return "Closed";
-//             } else {
-//                 return "Available";
-//             }
-//         }
-//     },
-//     score: { type: Number, default: null }
-// }, { collection: "quizzes" });
-//
-// export default quizSchema;
-
-
 import mongoose from "mongoose";
+
+const questionSchema = new mongoose.Schema({
+    questionText: { type: String, required: true },
+    questionType: {
+        type: String,
+        enum: ['Multiple Choice', 'True/False', 'Fill In The Blank'],
+        required: true
+    },
+    questionTitle: { type: String},
+    options: [
+        {
+            optionText: { type: String },
+            isCorrect: { type: Boolean, default: false }
+        }
+    ],
+    correctAnswer: { type: String },
+    points: { type: Number, default: 1 }
+});
 
 const quizSchema = new mongoose.Schema({
     title: { type: String, default: "Untitled Quiz" },
@@ -73,7 +45,8 @@ const quizSchema = new mongoose.Schema({
     dueDate: { type: Date, default: null },
     points: { type: Number, default: 100 },
     numberOfQuestions: { type: Number, default: 40 },
-    score: { type: Number, default: null }
+    score: { type: Number, default: null },
+    questions: [questionSchema],
 }, { collection: "quizzes" });
 
 quizSchema.virtual('status').get(function() {
