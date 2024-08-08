@@ -212,7 +212,18 @@ const QuizRoutes = (app) => {
         }
     });
 
+    //!!!!!!!!!!!!!!!!!!add score and answer
+    app.post('/api/quizzes/:quizId/submit', async (req, res) => {
+        const { quizId } = req.params;
+        const { username, answers } = req.body;
 
+        try {
+            const result = await dao.submitQuizAnswers(quizId, username, answers);
+            res.json({ message: 'Quiz submitted successfully', score: result.score });
+        } catch (error) {
+            res.status(500).json({ error: 'Error submitting quiz' });
+        }
+    });
 
 };
 

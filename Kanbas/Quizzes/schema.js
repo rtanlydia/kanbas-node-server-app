@@ -18,6 +18,13 @@ const questionSchema = new mongoose.Schema({
     points: { type: Number, default: 1 }
 });
 
+const quizResultSchema = new mongoose.Schema({
+    username: { type: String, required: true },
+    answers: { type: [String], required: true },
+    score: { type: Number},
+    attempt: { type: Number, default: 1 }
+});
+
 const quizSchema = new mongoose.Schema({
     title: { type: String, default: "Untitled Quiz" },
     course: { type: String },
@@ -47,6 +54,7 @@ const quizSchema = new mongoose.Schema({
     numberOfQuestions: { type: Number, default: 40 },
     score: { type: Number, default: null },
     questions: [questionSchema],
+    results: [quizResultSchema],
 }, { collection: "quizzes" });
 
 quizSchema.virtual('status').get(function() {

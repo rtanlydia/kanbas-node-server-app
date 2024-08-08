@@ -22,3 +22,39 @@ export const addQuestionToQuiz = async (quizId, newQuestion) => {
         throw error;
     }
 };
+
+export const submitQuizAnswers = async (quizId, username, answers) => {
+    try {
+        const quiz = await QuizModel.findById(quizId);
+        if (!quiz) {
+            console.error('Quiz not found');
+            throw new Error('Quiz not found');
+        }
+
+        let score = 0;
+        quiz.questions.forEach((question, index) => {
+            if (answers[index] === question.correctAnswer) {
+                score += question.points;
+            }
+        });
+
+        let userResult = quiz.results.find(result => result.username === username);
+
+        if (userResult) {
+            // 用户已存在，更新答案、得分和尝试次数
+            userResult.answers = answers;
+            userResult.score = score;
+            userResult.attempt += 1;
+        } else {
+            // 用户不存在，创建新结果
+            userResult = { username, answers, score, attempt: 1 };
+            quiz.results.push(userResult);
+        }
+
+        await quiz.save();
+        return userResult;
+    } catch (error) {
+        console.error('Error submitting quiz answers:', error);
+        throw error;
+    }
+};
