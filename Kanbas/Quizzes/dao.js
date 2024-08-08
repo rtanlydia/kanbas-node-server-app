@@ -41,12 +41,11 @@ export const submitQuizAnswers = async (quizId, username, answers) => {
         let userResult = quiz.results.find(result => result.username === username);
 
         if (userResult) {
-            // 用户已存在，更新答案、得分和尝试次数
             userResult.answers = answers;
             userResult.score = score;
             userResult.attempt += 1;
+            userResult.submittedAt = new Date();
         } else {
-            // 用户不存在，创建新结果
             userResult = { username, answers, score, attempt: 1 };
             quiz.results.push(userResult);
         }

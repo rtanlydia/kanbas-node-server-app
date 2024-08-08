@@ -22,7 +22,8 @@ const quizResultSchema = new mongoose.Schema({
     username: { type: String, required: true },
     answers: { type: [String], required: true },
     score: { type: Number},
-    attempt: { type: Number, default: 1 }
+    attempt: { type: Number, default: 1 },
+    submittedAt: { type: Date, default: Date.now }
 });
 
 const quizSchema = new mongoose.Schema({
