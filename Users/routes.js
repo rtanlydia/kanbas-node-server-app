@@ -110,8 +110,30 @@ export default function UserRoutes(app) {
         }
     };
 
+    const createCourseForUser = async (req, res) => {
+        const { userId } = req.params;
+        const courseData = req.body;
 
+        try {
+            const newCourse = await dao.createCourseForUser(userId, courseData);
+            res.status(201).json(newCourse);
+        } catch (error) {
+            console.error('Error creating course:', error);
+            res.status(500).json({ error: 'Failed to create course' });
+        }
+    };
 
+    const deleteCourseForUser = async (req, res) => {
+        const { userId, courseId } = req.params;
+
+        try {
+            const user = await dao.deleteCourseForUser(userId, courseId);
+            res.status(200).json(user);
+        } catch (error) {
+            console.error('Error deleting course:', error);
+            res.status(500).json({ error: 'Failed to delete course' });
+        }
+    };
 
 
     app.post("/api/users", createUser);
@@ -128,6 +150,9 @@ export default function UserRoutes(app) {
     // new user course!!!
     app.get("/api/users/:userId/enrolledCourses", findEnrolledCoursesByUserId);
     app.post("/api/users/:userId/RegisterCourses/:courseId/enroll", enrollUserInCourse);
+    // add new course for faculty
+    app.put("/api/users/:userId/create-course", createCourseForUser);
+    app.delete("/api/users/:userId/delete-course/:courseId", deleteCourseForUser);
 }
 
 

@@ -1,5 +1,6 @@
 import model from "./model.js";
 import CourseModel from '../Kanbas/Courses/model.js';
+import mongoose from "mongoose";
 export const createUser = (user) => {
     delete user._id
     return model.create(user);
@@ -36,7 +37,7 @@ export const findEnrolledCoursesByUserId = (userId) => {
 
 // Enroll user in a course
 export const enrollUserInCourse = async (userId, courseId) => {
-    console.log(`Enrolling user with ID: ${userId} into course with ID: ${courseId}`); // 添加日志记录
+    //console.log(`Enrolling user with ID: ${userId} into course with ID: ${courseId}`); // 添加日志记录
     const user = await model.findById(userId);
     if (!user) {
         console.error(`User not found with ID: ${userId}`); // 错误日志
@@ -56,4 +57,46 @@ export const enrollUserInCourse = async (userId, courseId) => {
     user.enrolledCourses.push(courseId);
     await user.save();
     return user.populate('enrolledCourses');
+};
+
+export const createCourseForUser = async (userId, courseData) => {
+    try {
+        const user = await model.findById(userId);
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        const newCourse = new CourseModel(courseData);
+        await newCourse.save();
+
+        user.enrolledCourses.push(newCourse._id);
+        await user.save();
+
+        return newCourse;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const deleteCourseForUser = async (userId, courseId) => {
+    try {
+        const user = await model.findById(userId);
+        if (!user) {
+            throw new Error('User not found');
+        }
+
+        const courseIndex = user.enrolledCourses.indexOf(courseId);
+        if (courseIndex > -1) {
+            user.enrolledCourses.splice(courseIndex, 1);
+        } else {
+            throw new Error('Course not found in enrolledCourses');
+        }
+
+        await user.save();
+        await CourseModel.findByIdAndDelete(courseId);
+
+        return user;
+    } catch (error) {
+        throw error;
+    }
 };
