@@ -225,6 +225,18 @@ const QuizRoutes = (app) => {
         }
     });
 
+    app.patch('/api/quizzes/:quizId/publish', async (req, res) => {
+        const { quizId } = req.params;
+        const { publishStatus } = req.body;
+        try {
+            const updatedQuiz = await dao.updateQuizPublishStatus(quizId, publishStatus);
+            res.status(200).json(updatedQuiz);
+        } catch (error) {
+            console.error('Error publishing/unpublishing quiz:', error);
+            res.status(500).json({ error: 'Failed to update publish status' });
+        }
+    });
+
 };
 
 

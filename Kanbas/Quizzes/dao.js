@@ -57,3 +57,17 @@ export const submitQuizAnswers = async (quizId, username, answers) => {
         throw error;
     }
 };
+
+export const updateQuizPublishStatus = async (quizId, publishStatus) => {
+    try {
+        const updatedQuiz = await QuizModel.findByIdAndUpdate(
+            quizId,
+            { publishStatus },
+            { new: true }
+        );
+        return updatedQuiz;
+    } catch (error) {
+        console.error('Error updating publish status:', error);
+        throw error;
+    }
+};

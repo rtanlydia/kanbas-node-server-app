@@ -42,6 +42,7 @@ const quizSchema = new mongoose.Schema({
     howManyAttempts: {type: Number, default: 1},
     shuffleAnswers: {type:Boolean, default:false },
     showCorrectAnswers: {type:Boolean, default:false },
+    publishStatus: {type:Boolean, default:false },
     showCorrectAnswersDate: { type: Date, default: null },
     timeLimit: {type: Number, default: 20},
     accessCode: {type: String, default: null },
